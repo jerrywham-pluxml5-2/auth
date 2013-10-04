@@ -33,23 +33,23 @@ class auth extends plxPlugin {
 	 **/	
 	public function AdminAuthPrepend() {
 		
-		echo "<?php /* Modification anti cracking formulaire admin */
-		if(!empty(\$_GET['d']) && \$_GET['d']==1 && isset(\$_SESSION['user'])) {
-			unset(\$_SESSION['maxtry']);
+		$string = ' /* Modification anti cracking formulaire admin */
+		if(!empty($_GET[\'d\']) && $_GET[\'d\']==1 && isset($_SESSION[\'user\']) && isset($_SESSION[\'maxtry\'])) {
+			unset($_SESSION[\'maxtry\']);
 		}
-		if(\$_SESSION['maxtry'] >= 2) {
+		if(isset($_SESSION[\'maxtry\']) && $_SESSION[\'maxtry\'] >= 2) {
 			exit();
 		}
-		if(!empty(\$_POST['login']) AND !empty(\$_POST['password'])) {
-			if(!isset(\$_SESSION['maxtry'])) {
-				\$_SESSION['maxtry'] = 1; // Si la sessvar maxtry n'existe pas on la met à 1 dès qu'une tentative est faite
+		if(!empty($_POST[\'login\']) AND !empty($_POST[\'password\'])) {
+			if(!isset($_SESSION[\'maxtry\'])) {
+				$_SESSION[\'maxtry\'] = 1; // Si la sessvar maxtry n\'existe pas on la met à 1 dès qu\'une tentative est faite
 			} else{ 
-				\$_SESSION['maxtry']++; // Si elle existe, on l'incrémente
-				@error_log(\"Host:\".\$_SERVER['REMOTE_ADDR'].\"-PluXml: Login failed. IP : \".\$_SERVER['REMOTE_ADDR']);
+				$_SESSION[\'maxtry\']++; // Si elle existe, on l\'incrémente
+				@error_log("Host:".$_SERVER[\'REMOTE_ADDR\']."-PluXml: Login failed. IP : ".$_SERVER[\'REMOTE_ADDR\']);
 			}
 		}
-		?>";
-
+		';
+		echo "<?php ".$string."?>";
 	}
 
 }
